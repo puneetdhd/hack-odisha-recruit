@@ -1,0 +1,64 @@
+version: "2.0"
+
+services:
+  web:
+    image: puneetdhd/nextjs-app:latest
+    expose:
+      - port: 3000
+        as: 80
+        to:
+          - global
+    depends_on:
+      - resume
+
+  resume:
+    image: puneetdhd/resume-parser:latest
+    expose:
+      - port: 8080
+        as: 8080
+        to:
+          - service: web
+
+profiles:
+  compute:
+    web:
+      resources:
+        cpu:
+          units: 0.5
+        memory:
+          size: 512Mi
+        storage:
+          size: 1Gi
+    resume:
+      resources:
+        cpu:
+          units: 0.25
+        memory:
+          size: 256Mi
+        storage:
+          size: 512Mi
+
+  placement:
+    akash:
+      attributes:
+        host: akash
+      signedBy:
+        anyOf:
+          - "akash1vz375dkt0c60annyp6mkzeejfq0qpyevhseu05"
+      pricing:
+        web:
+          denom: uakt
+          amount: 10
+        resume:
+          denom: uakt
+          amount: 5
+
+deployment:
+  web:
+    akash:
+      profile: web
+      count: 1
+  resume:
+    akash:
+      profile: resume
+      count: 1
