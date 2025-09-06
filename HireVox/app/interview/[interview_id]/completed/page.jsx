@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const InterviewComplete = () => {
   return (
-    <div className="bg-gray-900 text-white font-sans min-h-screen flex flex-col">
+    <div className="bg-white text-white font-sans min-h-screen flex flex-col">
       {/* Main Content */}
       <main className="flex-grow flex flex-col items-center justify-center space-y-6 sm:space-y-8 py-8 px-4 sm:px-6 lg:px-8">
         {/* Success Icon */}
@@ -13,18 +13,18 @@ const InterviewComplete = () => {
         </div>
 
         {/* Heading */}
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center">
+        <h1 className="text-primary text-2xl sm:text-3xl lg:text-4xl font-bold text-center">
           Interview Complete!
         </h1>
 
         {/* Subheading */}
-        <p className="text-base sm:text-lg text-gray-300 text-center max-w-2xl">
+        <p className="text-base sm:text-lg text-gray-600 text-center max-w-2xl">
           Thank you for participating in the AI-driven interview with Alcruiter
         </p>
 
         {/* Next Steps Card */}
-        <div className="bg-gray-800 rounded-xl p-6 sm:p-8 shadow-lg w-full max-w-xl space-y-4">
-          <div className="flex items-center justify-center rounded-full bg-gray-700 w-12 h-12 mx-auto">
+        <div className="bg-blue-500 rounded-xl p-6 sm:p-8 shadow-lg w-full max-w-xl space-y-4">
+          <div className="flex items-center justify-center rounded-full bg-white w-12 h-12 mx-auto">
             <Send className="h-6 w-6 text-blue-400" />
           </div>
 
@@ -36,7 +36,7 @@ const InterviewComplete = () => {
             The recruiter will review your interview responses and will contact you soon regarding the next steps.
           </p>
 
-          <div className="flex items-center justify-center text-gray-400 text-xs sm:text-sm">
+          <div className="flex items-center justify-center text-gray-200 font-bold text-xs sm:text-sm">
             <Clock className="h-4 w-4 mr-1" />
             <span>Response within 2-3 business days</span>
           </div>
@@ -46,7 +46,7 @@ const InterviewComplete = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-gray-400 text-center py-4 px-4">
+      <footer className="bg-gray-200 text-gray-600 text-center py-4 px-4">
         <p className="text-xs sm:text-sm">
           &copy; 2025 HireVox. All rights reserved.
         </p>

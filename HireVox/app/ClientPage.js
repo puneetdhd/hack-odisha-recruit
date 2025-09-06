@@ -151,7 +151,7 @@ export default function ClientPage() {
 
             <div className="flex justify-center lg:justify-end">
               <img
-                src="/professional-hiring-manager-and-candidate-having-a.png"
+                src="https://t4.ftcdn.net/jpg/05/88/10/29/360_F_588102950_BSSyCfB9AFqSlzx8Rn1cpDSdfrCVCscu.jpg"
                 alt="Hiring manager conducting AI-powered interview with candidate"
                 className="max-w-full h-auto rounded-lg"
               />

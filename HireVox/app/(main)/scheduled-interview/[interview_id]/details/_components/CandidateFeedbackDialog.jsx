@@ -61,7 +61,7 @@ function CandidateFeedbackDialog({ candidate }) {
                                         <Progress className='mt-3' value={candidate?.feedback?.feedback?.rating?.problemSolving * 10} />
                                     </div>
                                     <div>
-                                        <h2 className='flex justify-between'>Problem-Solving Skills <span>{candidate?.feedback?.feedback?.rating?.experience}/10</span></h2>
+                                        <h2 className='flex justify-between'>Experience <span>{candidate?.feedback?.feedback?.rating?.experience}/10</span></h2>
                                         <Progress className='mt-3' value={candidate?.feedback?.feedback?.rating?.experience * 10} />
                                     </div>
                                 </div>
