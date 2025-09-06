@@ -236,6 +236,8 @@ import axios from "axios";
 import { useParams } from "next/navigation";
 import { supabase } from "@/services/supabaseClient";
 import { useRouter } from "next/navigation";
+import TimerCounter from "./_components/TimerCounter";
+
 
 function StartInterview() {
   const { interviewInfo, setInterviewInfo } = useContext(InterviewDataContext);
@@ -244,6 +246,8 @@ function StartInterview() {
   const [conversation, setConversation] = useState();
   const router = useRouter()
   const [loading, setLoading] = useState()
+
+  const hasFeedbackSaved = useRef(false); // NEW: prevent duplicate DB inserts
 
   // Ref to always store latest conversation
   const conversationRef = useRef();
@@ -386,12 +390,11 @@ function StartInterview() {
     vapi.start(assistantOptions);
   };
 
-  // const stopInterview = () => {
-  //   vapi.stop();
-  //   toast("Interview ended");
-  // };
-
   const endInterview = async () => {
+
+    if (hasFeedbackSaved.current) return; // stop duplicates
+    hasFeedbackSaved.current = true;
+
     try {
       setLoading(true);
 
@@ -629,13 +632,38 @@ function StartInterview() {
   };
 
   console.log(conversation);
+
+  // Converts "15 mins" or "30 min" or "1 hr" into seconds
+  const parseDurationToSeconds = (durationStr) => {
+    if (!durationStr) return 0;
+
+    const lower = durationStr.toLowerCase();
+
+    if (lower.includes("hr")) {
+      const hours = parseInt(lower, 10) || 0;
+      return hours * 3600;
+    }
+
+    if (lower.includes("min")) {
+      const minutes = parseInt(lower, 10) || 0;
+      return minutes * 60;
+    }
+
+    if (lower.includes("sec")) {
+      const seconds = parseInt(lower, 10) || 0;
+      return seconds;
+    }
+
+    return parseInt(lower, 10) || 0; // fallback: raw number
+  };
+
   return (
     <div className="p-20 lg:px-48 xl:px-56">
       <h2 className="font-bold text-xl flex items-center justify-between">
         AI Interview Session
         <span className="flex gap-2 items-center">
           <Timer />
-          00:00:00
+          <TimerCounter duration={parseDurationToSeconds(interviewInfo?.interviewData?.duration)} onEnd={endInterview} />
         </span>
       </h2>
 
@@ -692,3 +720,4 @@ function StartInterview() {
 }
 
 export default StartInterview;
+
