@@ -1,57 +1,70 @@
 "use client"
-import React, { useEffect } from 'react'
-import WelcomeContainer from './_components/WelcomeContainer'
-import CreateOptions from './_components/CreateOptions'
-import LatestInterviewsList from './_components/LatestInterviewsList'
-import { useUser } from '@/app/provider'
+import { ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/services/supabaseClient'
-import { Skeleton } from '@/components/ui/skeleton'
+import React, { useState } from 'react'
+import { Progress } from '@/components/ui/progress'
+import FormContainer from './_components/FormContainer'
+import QuestionList from './_components/QuestionList'
+import { toast } from 'sonner'
+import InterviewLink from './_components/InterviewLink'
+import { useUser } from '@/app/provider'
+import { z } from 'zod';
 
-function Dashboard() {
-  const { user, setUser } = useUser();
+function CreateInterview() {
   const router = useRouter();
-  const [loading, setLoading] = React.useState(true);
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState();
+  const [interviewId,setInterviewId] = useState();
+  const {user} = useUser()
 
-  useEffect(() => {
-    // Redirect to /auth if not logged in
-    const checkAuth = async () => {
-      const { data: { user: supaUser } } = await supabase.auth.getUser();
-      if (!supaUser) {
-        router.replace('/auth');
-      }
-      setLoading(false);
-    };
-    checkAuth();
-  }, [router]);
+  // Zod schema for validation
+  const interviewSchema = z.object({
+    jobPosition: z.string().min(2, 'Job position required'),
+    jobDescription: z.string().min(10, 'Job description required'),
+    duration: z.string().min(1, 'Duration required'),
+    type: z.array(z.string()).min(1, 'Select at least one interview type'),
+  });
 
-  const handleLogout = async () => {
-    setLoading(true);
-    await supabase.auth.signOut();
-    setUser(null);
-    router.replace('/auth');
-    setLoading(false);
-  };
+  const onHandleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Skeleton className="w-32 h-32" />
-      </div>
-    );
+    console.log("formData: ", formData)
+
+  }
+
+  const onGoToNext = () => {
+    if (user?.credits<=0){
+      toast('please add credits')
+      return 
+    }
+    // Zod validation
+    const result = interviewSchema.safeParse(formData);
+    if (!result.success) {
+      toast(result.error.errors[0].message);
+      return;
+    }
+    setStep(step + 1)
+  }
+  const onCreateLink=(interview_id)=>{
+    setInterviewId(interview_id)
+    setStep(step+1)
   }
 
   return (
-    <div>
-      {/* <WelcomeContainer /> */}
-      <div className='flex justify-between items-center my-3'>
-        <h2 className='font-bold text-xl'>Dashboard</h2>
-        
+    <div className='mt-10 px-10 md:px-24 lg:px-44 xl:px-56'>
+      <div className='flex gap-5 items-center'>
+        <ArrowLeft onClick={() => router.back()} className='cursor-pointer' />
+        <h2 className='font-bold text-2xl'>Create New Interview</h2>
       </div>
-      <CreateOptions />
-      <LatestInterviewsList />
+      <Progress value={step * 33.33} className='my-5' />
+      {step == 1 ? <FormContainer onHandleInputChange={onHandleInputChange} GoToNext={() => onGoToNext()} />
+        : step == 2 ? <QuestionList formData={formData} onCreateLink={(interview_id)=>onCreateLink(interview_id)} /> : 
+        step==3?<InterviewLink interview_id={interviewId} formData={formData} />:null}
     </div>
   )
 }
 
-export default Dashboard
+export default CreateInterview
