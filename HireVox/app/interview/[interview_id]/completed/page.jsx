@@ -1,5 +1,6 @@
 import React from 'react'
 import { Home, ArrowRight, Check, Send, Clock } from 'lucide-react';
+import Link from 'next/link';
 
 const InterviewComplete = () => {
   return (
@@ -30,11 +31,11 @@ const InterviewComplete = () => {
           <h2 className="text-xl sm:text-2xl font-semibold text-center">
             What's Next?
           </h2>
-          
+
           <p className="text-gray-300 text-center text-sm sm:text-base">
             The recruiter will review your interview responses and will contact you soon regarding the next steps.
           </p>
-          
+
           <div className="flex items-center justify-center text-gray-400 text-xs sm:text-sm">
             <Clock className="h-4 w-4 mr-1" />
             <span>Response within 2-3 business days</span>
@@ -43,11 +44,13 @@ const InterviewComplete = () => {
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 w-full max-w-md">
-          <button className="bg-gray-700 text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg py-3 px-4 sm:px-6 flex items-center justify-center space-x-2 transition duration-300 ease-in-out w-full sm:w-auto">
-            <Home className="h-5 w-5" />
-            <span className="text-sm sm:text-base">Return Home</span>
-          </button>
-          
+          <Link href={'/dashboard'}>
+            <button className="bg-gray-700 text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg py-3 px-4 sm:px-6 flex items-center justify-center space-x-2 transition duration-300 ease-in-out w-full sm:w-auto">
+              <Home className="h-5 w-5" />
+              <span className="text-sm sm:text-base">Return Home</span>
+            </button>
+          </Link>
+
           <button className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg py-3 px-4 sm:px-6 flex items-center justify-center space-x-2 transition duration-300 ease-in-out w-full sm:w-auto">
             <span className="text-sm sm:text-base">View Opportunities</span>
             <ArrowRight className="h-5 w-5" />

@@ -8,12 +8,12 @@ import { supabase } from '@/services/supabaseClient';
 import { useUser } from '@/app/provider';
 import { v4 as uuidv4 } from 'uuid';
 
-function QuestionList({ formData, onCreateLink}) {
+function QuestionList({ formData, onCreateLink }) {
 
     const [loading, setLoading] = useState(true)
     const [questionList, setQuestionList] = useState();
     const { user } = useUser();
-    const [saveLoading,setSaveLoading] = useState(false)
+    const [saveLoading, setSaveLoading] = useState(false)
 
     useEffect(() => {
         if (formData) {
@@ -40,25 +40,56 @@ function QuestionList({ formData, onCreateLink}) {
     //     }
     // }
 
+    // const GenerateQuestionList = async () => {
+    //     setLoading(true);
+    //     try {
+    //         const result = await axios.post('/api/ai-model', { ...formData });
+    //         console.log(result.data.content);
+
+    //         // clean out code block fences before parsing
+    //         let content = result.data.content.replace(/```json/g, "").replace(/```/g, "").trim();
+
+    //         const parsed = JSON.parse(content); // now it's a JS object
+    //         setQuestionList(parsed.interviewQuestions || []);
+
+    //         setLoading(false);
+    //     } catch (e) {
+    //         console.error(e);
+    //         toast('server error, Try Again');
+    //         setLoading(false);
+    //     }
+    // };
+
+
     const GenerateQuestionList = async () => {
         setLoading(true);
         try {
             const result = await axios.post('/api/ai-model', { ...formData });
-            console.log(result.data.content);
+            console.log("Raw AI output:", result.data.content);
 
-            // clean out code block fences before parsing
-            let content = result.data.content.replace(/```json/g, "").replace(/```/g, "").trim();
+            // clean markdown code blocks
+            let content = result.data.content
+                .replace(/```json/g, "")
+                .replace(/```/g, "")
+                .trim();
 
-            const parsed = JSON.parse(content); // now it's a JS object
+            // try to detect if response is a JS-like object instead of JSON
+            if (content.startsWith("interviewQuestions=")) {
+                content = content.replace("interviewQuestions=", "").trim();
+                // wrap in valid JSON
+                content = JSON.stringify({ interviewQuestions: eval(content) });
+            }
+
+            const parsed = JSON.parse(content);
             setQuestionList(parsed.interviewQuestions || []);
-
-            setLoading(false);
         } catch (e) {
-            console.error(e);
+            console.error("Parsing failed:", e, result?.data?.content);
             toast('server error, Try Again');
+        } finally {
             setLoading(false);
         }
     };
+
 
     const onFinish = async () => {
         setSaveLoading(true)
@@ -75,9 +106,19 @@ function QuestionList({ formData, onCreateLink}) {
             ])
             .select()
 
-            setSaveLoading(false)
+        // update user credits
 
-            onCreateLink(interview_id)
+        const userUpdate = await supabase
+            .from('users')
+            .update({ credits: Number(user?.credits) - 1 })
+            .eq('email', user?.email)
+            .select()
+        console.log(userUpdate)
+
+
+        setSaveLoading(false)
+
+        onCreateLink(interview_id)
 
         console.log(data)
 
@@ -106,7 +147,7 @@ function QuestionList({ formData, onCreateLink}) {
 
             <div className='flex justify-end mt-10'>
                 <Button onClick={() => onFinish()} disabled={saveLoading}>
-                    {saveLoading && <Loader2Icon className='animate-apin'/>} 
+                    {saveLoading && <Loader2Icon className='animate-apin' />}
                     Create Interview Link & Finish
                 </Button>
             </div>

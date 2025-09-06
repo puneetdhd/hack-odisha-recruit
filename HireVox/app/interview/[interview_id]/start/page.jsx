@@ -619,7 +619,7 @@ function StartInterview() {
           userEmail: interviewInfo?.userEmail,
           interview_id: interview_id,
           feedback: JSON.parse(FINAL_CONTENT),
-          recommended: false
+          recommended: JSON.parse(FINAL_CONTENT).recommendation
         },
       ])
       .select()

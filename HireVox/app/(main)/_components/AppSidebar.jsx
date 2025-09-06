@@ -39,7 +39,7 @@ export function AppSidebar() {
                             </h1>
                         </div>
                     </div>
-                    <Link href={'/dashboard/create-interview'}>
+                    <Link href='/dashboard/create-interview'>
                         <button className="w-full bg-primary hover:bg-blue-600 text-white font-medium py-3 px-2 rounded-lg flex items-center justify-center transition-colors cursor-pointer">
                             <Plus className="w-5 h-5" />
                             Create New Interview
