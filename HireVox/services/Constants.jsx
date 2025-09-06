@@ -205,6 +205,7 @@ Rate the candidate in these categories:
 - Communication
 - Problem Solving
 - Experience
+- Overall rating
 
 Then provide:
 - A **3-line summary** about the interview performance
@@ -219,7 +220,8 @@ Respond only in valid **JSON** with this structure:
       "technicalSkills": <number out of 10>,
       "communication": <number out of 10>,
       "problemSolving": <number out of 10>,
-      "experience": <number out of 10>
+      "experience": <number out of 10>,
+      "totalRating": <number out of 10>,
     },
     "summary": "<3 line summary>",
     "recommendation": "<Recommended | Not recommended>",

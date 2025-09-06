@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Copy, Send } from 'lucide-react'
 import moment from 'moment'
+import Link from 'next/link'
 import React from 'react'
 import { toast } from 'sonner'
 
@@ -31,7 +32,7 @@ function InterviewCard({ interview, viewDetail=false }) {
                 <Button variant='outline' className={'w-1/2'} onClick={copyLink}><Copy />Copy Link</Button>
                 <Button className={'w-1/2'} onClick={onSend}><Send />Send</Button>
             </div>:
-            <Button className='mt-5 w-full' variant='outline'>View Details<ArrowRight/></Button>
+            <Link href={'/scheduled-interview/'+interview?.interview_id+'/details'}><Button className='mt-5 w-full' variant='outline'>View Details<ArrowRight/></Button></Link>
             }
         </div>
     )
