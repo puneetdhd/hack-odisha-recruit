@@ -8,6 +8,7 @@ import QuestionList from './_components/QuestionList'
 import { toast } from 'sonner'
 import InterviewLink from './_components/InterviewLink'
 import { useUser } from '@/app/provider'
+import { z } from 'zod';
 
 function CreateInterview() {
   const router = useRouter();
@@ -15,6 +16,14 @@ function CreateInterview() {
   const [formData, setFormData] = useState();
   const [interviewId,setInterviewId] = useState();
   const {user} = useUser()
+
+  // Zod schema for validation
+  const interviewSchema = z.object({
+    jobPosition: z.string().min(2, 'Job position required'),
+    jobDescription: z.string().min(10, 'Job description required'),
+    duration: z.string().min(1, 'Duration required'),
+    type: z.array(z.string()).min(1, 'Select at least one interview type'),
+  });
 
   const onHandleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -31,8 +40,10 @@ function CreateInterview() {
       toast('please add credits')
       return 
     }
-    if (!formData?.jobPosition || !formData?.jobDescription || !formData?.duration || !formData?.type) {
-      toast('please enter all details')
+    // Zod validation
+    const result = interviewSchema.safeParse(formData);
+    if (!result.success) {
+      toast(result.error.errors[0].message);
       return;
     }
     setStep(step + 1)
