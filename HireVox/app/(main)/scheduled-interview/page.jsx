@@ -38,7 +38,7 @@ function ScheduledInterview() {
                 <div className='grid grid-cols-2 mt-5 xl:grid-cols-3 gap-5'>
                     {InterviewList?.map((interview, index) => (
                         <InterviewCard interview={interview} key={index}
-                        viewDetail={true} />
+                        sendLink={false} />
                     ))}
                 </div>
             }
