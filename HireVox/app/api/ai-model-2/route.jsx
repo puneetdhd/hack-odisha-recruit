@@ -1,3 +1,65 @@
+// import { NextResponse } from "next/server";
+// import axios from "axios";
+
+// export async function POST(req) {
+//   try {
+//     const { parsedResume } = await req.json();
+
+//     if (!parsedResume) {
+//       return NextResponse.json(
+//         { error: "parsedResume is required" },
+//         { status: 400 }
+//       );
+//     }
+
+//     const FINAL_PROMPT = `
+// You are an interview assistant.
+// Given the parsed resume below, generate exactly 3 personalized interview questions.
+// They must be focused on the candidate's background, skills, and experiences.
+// Return ONLY a valid JSON array of strings, with no extra text, no numbering.
+
+// 🧩 Output format:
+
+// Return ONLY valid JSON (no explanations, no markdown).  
+// The JSON must follow this schema exactly:
+//   [
+//     {
+//       "question": "string",
+//       "type": "Technical | Behavioral | Experience | Problem Solving | Leadership"
+//     }
+//   ]
+
+// Resume:
+// ${JSON.stringify(parsedResume, null, 2)}
+// `;
+
+
+//     const client = axios.create({
+//       baseURL: "https://chatapi.akash.network/api/v1",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${process.env.AKASH_API_KEY}`,
+//       },
+//     });
+
+//     const response = await client.post("/chat/completions", {
+//       model: "Meta-Llama-3-1-8B-Instruct-FP8",
+//       messages: [{ role: "user", content: FINAL_PROMPT }],
+//     });
+
+//     const aiMessage = response.data?.choices?.[0]?.message?.content || "";
+
+//     return NextResponse.json({ questions: aiMessage });
+//   } catch (e) {
+//     console.error("AI model error:", e?.response?.data || e);
+//     return NextResponse.json(
+//       { error: "AI model failed" },
+//       { status: 500 }
+//     );
+//   }
+// }
+
+// working
 import { NextResponse } from "next/server";
 import axios from "axios";
 
@@ -16,23 +78,21 @@ export async function POST(req) {
 You are an interview assistant.
 Given the parsed resume below, generate exactly 3 personalized interview questions.
 They must be focused on the candidate's background, skills, and experiences.
-Return ONLY a valid JSON array of strings, with no extra text, no numbering.
 
 🧩 Output format:
-
-Return ONLY valid JSON (no explanations, no markdown).  
+Return ONLY valid JSON (no explanations, no markdown).
 The JSON must follow this schema exactly:
-  [
-    {
-      "question": "string",
-      "type": "Technical | Behavioral | Experience | Problem Solving | Leadership"
-    }
-  ]
+
+[
+  {
+    "question": "string",
+    "type": "Technical | Behavioral | Experience | Problem Solving | Leadership"
+  }
+]
 
 Resume:
 ${JSON.stringify(parsedResume, null, 2)}
 `;
-
 
     const client = axios.create({
       baseURL: "https://chatapi.akash.network/api/v1",
@@ -44,12 +104,26 @@ ${JSON.stringify(parsedResume, null, 2)}
 
     const response = await client.post("/chat/completions", {
       model: "Meta-Llama-3-1-8B-Instruct-FP8",
-      messages: [{ role: "user", content: FINAL_PROMPT }],
+      messages: [
+        { role: "system", content: "You are a strict JSON generator. Respond only with valid JSON." },
+        { role: "user", content: FINAL_PROMPT }
+      ],
     });
 
-    const aiMessage = response.data?.choices?.[0]?.message?.content || "";
+    const aiMessage = response.data?.choices?.[0]?.message?.content?.trim() || "";
 
-    return NextResponse.json({ questions: aiMessage });
+    let parsed;
+    try {
+      parsed = JSON.parse(aiMessage);
+    } catch (err) {
+      console.error("Invalid JSON from model:", aiMessage);
+      return NextResponse.json(
+        { error: "Model did not return valid JSON", raw: aiMessage },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ questions: parsed });
   } catch (e) {
     console.error("AI model error:", e?.response?.data || e);
     return NextResponse.json(

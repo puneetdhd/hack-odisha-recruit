@@ -11,6 +11,7 @@ import Vapi from "@vapi-ai/web";
 import { supabase } from "@/services/supabaseClient";
 import axios from "axios";
 
+
 function StartInterview() {
   const { interviewInfo } = useContext(InterviewDataContext);
   const vapi = new Vapi(process.env.NEXT_PUBLIC_VAPI_API_KEY);
@@ -26,14 +27,14 @@ function StartInterview() {
   const hasFeedbackSaved = useRef(false);
   const conversationRef = useRef();
 
-  // ✅ Start the interview when interviewInfo is available 
+  //  Start the interview when interviewInfo is available 
   useEffect(() => {
     if (interviewInfo) {
       startCall();
     }
   }, [interviewInfo]);
 
-  // ✅ Start Vapi call with assistant configuration
+  //  Start Vapi call with assistant configuration
   const startCall = () => {
     let questionList = "";
     interviewInfo?.interviewData?.questionList.forEach((item) => {
@@ -79,7 +80,7 @@ function StartInterview() {
     vapi.start(assistantOptions);
   };
 
-  // ✅ Helper: End interview
+  // End interview
   const endInterview = async (reasonMessage) => {
     if (hasFeedbackSaved.current) return;
     hasFeedbackSaved.current = true;
@@ -110,7 +111,7 @@ function StartInterview() {
     }
   };
 
-  // ✅ Generate and save feedback
+  //  Generate and save feedback
   const GenerateFeedback = async () => {
     try {
       const currentConversation = conversationRef.current;
@@ -127,7 +128,7 @@ function StartInterview() {
 
       const Content = result.data.content;
       console.log("AI feedback content:", Content);
-      
+
       // Clean up the content by removing markdown code blocks
       const FINAL_CONTENT = Content.replace(/```json/g, '').replace(/```/g, '').trim();
       console.log("Cleaned feedback content:", FINAL_CONTENT);
@@ -173,7 +174,7 @@ function StartInterview() {
     }
   };
 
-  // ✅ Vapi event handling
+  //  Vapi event handling
   useEffect(() => {
     const handleMessage = (message) => {
       console.log(message);
@@ -227,7 +228,7 @@ function StartInterview() {
     };
   }, []);
 
-  // ✅ Tab + visibility monitoring
+  // Tab + visibility monitoring
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
@@ -256,7 +257,7 @@ function StartInterview() {
     };
   }, []);
 
-  // ✅ Parse duration helper
+  // Parse duration helper
   const parseDurationToSeconds = (durationStr) => {
     if (!durationStr) return 0;
     const lower = durationStr.toLowerCase();
@@ -265,6 +266,7 @@ function StartInterview() {
     if (lower.includes("sec")) return parseInt(lower, 10) || 0;
     return parseInt(lower, 10) || 0;
   };
+
 
   return (
     <div className="relative p-20 lg:px-48 xl:px-56 min-h-screen">
@@ -315,9 +317,12 @@ function StartInterview() {
             {activeUser && (
               <span className="absolute inset-0 rounded-full bg-blue-500 opacity-75 animate-ping"></span>
             )}
-            <h2 className="text-2xl bg-primary text-white p-3 rounded-full px-4">
+            <h2
+              className="text-white bg-primary flex items-center justify-center rounded-full w-12 h-12 text-lg md:w-16 md:h-16 md:text-xl"
+            >
               {interviewInfo?.userName?.[0]}
             </h2>
+
           </div>
           <h2>{interviewInfo?.userName}</h2>
         </div>
@@ -342,3 +347,10 @@ function StartInterview() {
 }
 
 export default StartInterview;
+
+
+
+
+
+
+

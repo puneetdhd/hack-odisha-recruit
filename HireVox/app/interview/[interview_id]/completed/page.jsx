@@ -42,26 +42,13 @@ const InterviewComplete = () => {
           </div>
         </div>
 
-        {/* Buttons */}
-        <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 w-full max-w-md">
-          <Link href={'/dashboard'}>
-            <button className="bg-gray-700 text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg py-3 px-4 sm:px-6 flex items-center justify-center space-x-2 transition duration-300 ease-in-out w-full sm:w-auto">
-              <Home className="h-5 w-5" />
-              <span className="text-sm sm:text-base">Return Home</span>
-            </button>
-          </Link>
-
-          <button className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg py-3 px-4 sm:px-6 flex items-center justify-center space-x-2 transition duration-300 ease-in-out w-full sm:w-auto">
-            <span className="text-sm sm:text-base">View Opportunities</span>
-            <ArrowRight className="h-5 w-5" />
-          </button>
-        </div>
+        
       </main>
 
       {/* Footer */}
       <footer className="bg-gray-800 text-gray-400 text-center py-4 px-4">
         <p className="text-xs sm:text-sm">
-          &copy; 2023 Alcruiter. All rights reserved.
+          &copy; 2025 HireVox. All rights reserved.
         </p>
       </footer>
     </div>

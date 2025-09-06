@@ -3,12 +3,17 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
 export async function POST(req) {
-    const {conversation} = await req.json();
+    const { conversation } = await req.json();
 
     console.log(conversation)
 
-    const FINAL_PROMPT = FEEDBACK_PROMPT.replace('{{conversation}}',JSON.stringify(conversation))
-    
+    const candidateAnswers = conversation
+        .filter(msg => msg.role === "user")
+        .map(msg => msg.content)
+        .join("\n");
+    const FINAL_PROMPT = FEEDBACK_PROMPT.replace("{{conversation}}", candidateAnswers || "NO ANSWERS GIVEN");
+
+
 
     console.log(FINAL_PROMPT)
 
@@ -21,11 +26,13 @@ export async function POST(req) {
         const completion = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
             messages: [
+                { role: "system", content: "You are an evaluator of interview transcripts. Respond only in JSON as per format." },
                 { role: "user", content: FINAL_PROMPT }
             ],
         })
 
-        
+
+
         return NextResponse.json(completion.choices[0].message)
     } catch (e) {
         console.log(e)

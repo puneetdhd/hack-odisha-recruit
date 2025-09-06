@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { supabase } from '@/services/supabaseClient';
 import { useUser } from '@/app/provider';
-import InterviewCard from './interviewCard';
+import InterviewCard from './InterviewCard';
 
 function LatestInterviewsList() {
   const [InterviewList, setInterviewList] = useState([]);
