@@ -18,8 +18,8 @@ This project was developed by **Team [CodeBlooded]** and submitted for **[HackOd
 - ✨ **Resume Parsing & Ranking with AI**  
   Automatically extracts and ranks candidate resumes to save recruiters hours of manual work.  
 
-- 🗣️ **AI-Powered Interview (Voice/Chat)**  
-  Conducts structured interviews in real-time using AI voice/chat agents, ensuring consistent and unbiased questioning.  
+- 🗣️ **AI-Powered Interview (Voice)**  
+  Conducts structured interviews in real-time using AI voice agents, ensuring consistent and unbiased questioning.  
 
 - 📊 **Smart Scoring & Feedback**  
   Analyzes candidate responses, generates unbiased scores, and provides recruiters with structured feedback and recommendations.  
@@ -148,4 +148,5 @@ This project is licensed under the **MIT License**.
 ---
 
 ✨ **Hire smarter, not harder — with HireVox!**
+
 
