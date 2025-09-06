@@ -1,5 +1,4 @@
-# voice_server.py
-# Flask server with improved audio handling
+
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -7,18 +6,14 @@ import logging
 import mimetypes
 import os
 
-# Import all voice processing functions
 from voice_functions import InterviewVoiceMonitor
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
-# Initialize voice monitor
 voice_monitor = InterviewVoiceMonitor(similarity_threshold=0.75)
 
 def get_audio_format_from_file(audio_file):
@@ -26,14 +21,11 @@ def get_audio_format_from_file(audio_file):
     Determine audio format from file extension and MIME type
     """
     try:
-        # Get filename and extension
         filename = audio_file.filename or ''
         file_ext = os.path.splitext(filename)[1].lower()
         
-        # Get MIME type
         mime_type = audio_file.content_type or ''
         
-        # Format mapping
         format_map = {
             '.wav': 'wav',
             '.mp3': 'mp3', 
@@ -56,15 +48,12 @@ def get_audio_format_from_file(audio_file):
             'audio/aac': 'aac'
         }
         
-        # Try to determine format from extension first
         if file_ext in format_map:
             return format_map[file_ext]
         
-        # Try MIME type
         if mime_type in mime_map:
             return mime_map[mime_type]
         
-        # Default to wav
         logger.warning(f"Unknown audio format for file: {filename}, MIME: {mime_type}, defaulting to wav")
         return 'wav'
         
@@ -75,7 +64,6 @@ def get_audio_format_from_file(audio_file):
 @app.route('/register-voice', methods=['POST'])
 def register_voice():
     try:
-        # Get form data
         interview_id = request.form.get('interview_id')
         participant_id = request.form.get('participant_id')
         
@@ -92,11 +80,9 @@ def register_voice():
         if audio_file.filename == '':
             return jsonify({'success': False, 'error': 'No audio file selected'}), 400
         
-        # Determine audio format
         audio_format = get_audio_format_from_file(audio_file)
         logger.info(f"Detected audio format: {audio_format}")
         
-        # Read audio bytes
         audio_bytes = audio_file.read()
         if len(audio_bytes) == 0:
             return jsonify({'success': False, 'error': 'Empty audio file'}), 400
@@ -104,7 +90,6 @@ def register_voice():
         logger.info(f"Processing audio registration - Interview: {interview_id}, "
                    f"Participant: {participant_id}, Size: {len(audio_bytes)} bytes")
         
-        # Register voice
         result = voice_monitor.start_interview_monitoring(
             interview_id, participant_id, audio_bytes, audio_format
         )
@@ -118,7 +103,6 @@ def register_voice():
 @app.route('/verify-voice', methods=['POST'])
 def verify_voice():
     try:
-        # Get form data
         interview_id = request.form.get('interview_id')
         participant_id = request.form.get('participant_id')
         
@@ -135,10 +119,8 @@ def verify_voice():
         if audio_file.filename == '':
             return jsonify({'success': False, 'error': 'No audio file selected'}), 400
         
-        # Determine audio format
         audio_format = get_audio_format_from_file(audio_file)
         
-        # Read audio bytes
         audio_bytes = audio_file.read()
         if len(audio_bytes) == 0:
             return jsonify({'success': False, 'error': 'Empty audio file'}), 400
@@ -146,7 +128,6 @@ def verify_voice():
         logger.info(f"Processing voice verification - Interview: {interview_id}, "
                    f"Participant: {participant_id}, Size: {len(audio_bytes)} bytes")
         
-        # Verify voice
         result = voice_monitor.check_voice_during_interview(
             interview_id, participant_id, audio_bytes, audio_format
         )
