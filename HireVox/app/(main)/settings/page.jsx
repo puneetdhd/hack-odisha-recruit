@@ -17,7 +17,6 @@ function page() {
         { id: 'profile', label: 'Profile', icon: User },
         { id: 'billing', label: 'Credits & Billing', icon: CreditCard }
     ]
-    
 
     const renderProfileTab = () => (
         <div className="space-y-6">

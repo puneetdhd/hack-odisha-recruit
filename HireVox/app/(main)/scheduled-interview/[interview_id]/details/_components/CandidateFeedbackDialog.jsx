@@ -74,7 +74,7 @@ function CandidateFeedbackDialog({ candidate }) {
                                 <h2 className='font-bold text-2xl'>Recommendation Message</h2>
                                 <div className={`p-5 rounded-md mt-3 flex items-center justify-between gap-4 ${candidate?.feedback?.feedback?.recommendation == 'Not recommended' ? 'bg-red-100' : 'bg-green-100'}`}>
                                     <p className={`w-full ${candidate?.feedback?.feedback?.recommendation == 'Not recommended' ? 'text-red-800' : 'text-green-800'}`}>{candidate?.feedback?.feedback?.recommendationMsg}</p>
-                                    <Button className={`bg-red-800 hover:bg-red-700 w-1/3 ${candidate?.feedback?.feedback?.recommendation == 'Not recommended' ? 'bg-red-800' : 'bg-green-800'}`} onClick={onSend}><Send />Send</Button>
+                                    <Button className={'bg-red-800 hover:bg-red-700 w-1/3'} onClick={onSend}><Send />Send</Button>
                                 </div>
                                 
                             </div>
