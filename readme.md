@@ -25,10 +25,7 @@ This project was developed by **Team [CodeBlooded]** and submitted for **[HackOd
   Analyzes candidate responses, generates unbiased scores, and provides recruiters with structured feedback and recommendations.  
 
 - 📈 **Recruiter Dashboard with Analytics**  
-  Centralized dashboard to view candidate rankings, insights, and hiring metrics.  
-
-- 🔗 **ATS & HR Tool Integration**  
-  Seamless integration with existing ATS/HR platforms, making adoption frictionless.  
+  Centralized dashboard to view candidate rankings, insights, and hiring metrics.    
 
 - 🛡️ **Cheat Prevention**  
   Detects if a candidate switches tabs, delays answers unnaturally, or tries to cheat — and flags or ends the interview.  
@@ -151,3 +148,4 @@ This project is licensed under the **MIT License**.
 ---
 
 ✨ **Hire smarter, not harder — with HireVox!**
+
