@@ -9,6 +9,24 @@ import { supabase } from "@/services/supabaseClient";
 import { InterviewDataContext } from "@/context/InterviewDataContext";
 import axios from "axios";
 
+// 🔹 Helper: Request fullscreen
+const enterFullscreen = async () => {
+  try {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      await elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) {
+      await elem.webkitRequestFullscreen(); // Safari
+    } else if (elem.msRequestFullscreen) {
+      await elem.msRequestFullscreen(); // IE11
+    }
+    return true;
+  } catch (err) {
+    console.error("Fullscreen request failed", err);
+    return false;
+  }
+};
+
 function Interview() {
   const router = useRouter();
   const { interview_id } = useParams();
@@ -58,13 +76,11 @@ function Interview() {
         "http://localhost:8000/api/v1/resume/upload",
         formData,
         {
-          // upload resume
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
 
       console.log(res.data);
-
       setParsedResume(res.data); // store parsed resume
     } catch (err) {
       console.error("Resume upload failed", err);
@@ -83,16 +99,23 @@ function Interview() {
     setLoading(true);
 
     try {
+      // 🔹 Ask for fullscreen first
+      const fullscreenGranted = await enterFullscreen();
+      if (!fullscreenGranted) {
+        toast("You must allow fullscreen to join the interview");
+        setLoading(false);
+        return;
+      }
+
       // 🔹 Generate personalized questions from AI
       const aiRes = await axios.post("/api/ai-model-2", {
         parsedResume,
       });
 
       let personalizedQuestions = aiRes.data.questions || [];
-
       console.log("Raw AI response:", personalizedQuestions);
 
-      // 🔹 Parse the JSON response if it's a string
+      // 🔹 Parse if string
       if (typeof personalizedQuestions === "string") {
         try {
           personalizedQuestions = JSON.parse(personalizedQuestions);
@@ -103,17 +126,13 @@ function Interview() {
         }
       }
 
-      // Convert personalized questions to match existing format {question, type}
+      // Convert to standard format {question, type}
       const formattedPersonalizedQuestions = personalizedQuestions.map((q) => {
-        // If it's already in the correct format
         if (typeof q === "object" && q.question && q.type) {
           return q;
         }
-
-        // If it's just a string, convert to object format
         if (typeof q === "string") {
-          let questionType = "Experience"; // default
-
+          let questionType = "Experience";
           const lowerQ = q.toLowerCase();
           if (
             lowerQ.includes("technical") ||
@@ -142,32 +161,20 @@ function Interview() {
           ) {
             questionType = "Leadership";
           }
-
-          return {
-            question: q,
-            type: questionType,
-          };
+          return { question: q, type: questionType };
         }
-
-        // Fallback
-        return {
-          question: q.toString(),
-          type: "Experience",
-        };
+        return { question: q.toString(), type: "Experience" };
       });
 
-      // Get existing questions
+      // Merge with existing questions
       const existingQuestions = interviewData?.questionList || [];
-
-      // Merge questions
       const combinedQuestions = [
         ...existingQuestions,
         ...formattedPersonalizedQuestions,
       ];
-
       console.log("Combined questions:", combinedQuestions);
 
-      // Save interview info to context
+      // Save to context
       setInterviewInfo({
         userName,
         userEmail,
@@ -178,7 +185,7 @@ function Interview() {
         },
       });
 
-      // Redirect to interview start
+      // Redirect to start
       router.push(`/interview/${interview_id}/start`);
     } catch (err) {
       console.error("Error during interview setup", err);
@@ -202,12 +209,10 @@ function Interview() {
           <span className="text-gray-700">Vox</span>
         </h1>
 
-        {/* Subtitle */}
         <h2 className="mt-2 font-semibold text-lg text-center">
           AI-Powered Interview Platform
         </h2>
 
-        {/* Image */}
         <Image
           src="/interview.png"
           alt="interview"
@@ -216,12 +221,10 @@ function Interview() {
           className="w-[250px] sm:w-[300px] md:w-[350px] my-6"
         />
 
-        {/* Interview Title */}
         <h2 className="font-bold text-lg md:text-xl mt-2 text-center">
           {interviewData?.jobPosition}
         </h2>
 
-        {/* Time Info */}
         <h2 className="flex gap-2 items-center text-gray-500 mt-2 text-sm md:text-base">
           <Clock className="h-4 w-4" /> {interviewData?.duration}
         </h2>
@@ -265,7 +268,7 @@ function Interview() {
                 if (e.target.files && e.target.files[0]) {
                   const file = e.target.files[0];
                   setResumeFile(file);
-                  handleResumeUpload(file); // parse immediately
+                  handleResumeUpload(file);
                 }
               }}
             />
@@ -286,6 +289,9 @@ function Interview() {
               </li>
               <li className="text-sm text-primary">
                 Find a quiet place for the interview
+              </li>
+              <li className="text-sm text-primary">
+                The interview will run in fullscreen. Please allow fullscreen when prompted.
               </li>
             </ul>
           </div>
