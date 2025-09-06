@@ -403,7 +403,7 @@ function StartInterview() {
         try {
           await vapi.stop(); // no .catch here
         } catch (err) {
-          console.error("Error stopping Vapi:", err);
+          console.log("Error stopping Vapi:", err);
         }
       }
 
@@ -413,7 +413,7 @@ function StartInterview() {
       // Redirect directly
       router.replace(`/interview/${interview_id}/completed`);
     } catch (err) {
-      console.error("Error ending interview:", err);
+      console.log("Error ending interview:", err);
       toast.error("Something went wrong ending the interview");
     } finally {
       setLoading(false);
