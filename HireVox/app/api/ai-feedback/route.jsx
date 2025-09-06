@@ -1,18 +1,17 @@
-import { QUESTION_PROMPT } from "@/services/Constants"
-import { NextResponse } from "next/server"
-import OpenAI from "openai"
+import { FEEDBACK_PROMPT } from "@/services/Constants";
+import { NextResponse } from "next/server";
+import OpenAI from "openai";
 
 export async function POST(req) {
+    const {conversation} = await req.json();
 
-    const { jobPosition, jobDescription, duration, type } = await req.json()
+    console.log(conversation)
 
-    const FINAL_PROMPT = QUESTION_PROMPT
-        .replace('{{jobTitle}}', jobPosition)
-        .replace('{{jobDescription}}', jobDescription)
-        .replace('{{duration}}', duration)
-        .replace('{{type}}', type)
+    const FINAL_PROMPT = FEEDBACK_PROMPT.replace('{{conversation}}',JSON.stringify(conversation))
+    
 
     console.log(FINAL_PROMPT)
+
 
     try {
         const openai = new OpenAI({
@@ -32,4 +31,7 @@ export async function POST(req) {
         console.log(e)
         return NextResponse.json(e)
     }
+
 }
+
+

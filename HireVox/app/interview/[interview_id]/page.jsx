@@ -24,6 +24,8 @@ function Interview() {
 
     const {InterviewInfo,setInterviewInfo}=useContext(InterviewDataContext)
 
+    const [userEmail,setUserEmail] = useState();
+
     
 
     useEffect(() => {
@@ -61,6 +63,7 @@ function Interview() {
         console.log(interviews[0]);
         setInterviewInfo({
             userName: userName,
+            userEmail: userEmail,
             interviewData: interviews[0]
         });
         router.push('/interview/' + interview_id + '/start')
@@ -110,6 +113,11 @@ function Interview() {
                 <div className="w-full mt-4">
                     <h2 className="mb-1 text-sm md:text-base">Enter your full name</h2>
                     <Input placeholder="e.g., Smith Jones" className="w-full" onChange={(event) => setUserName(event.target.value)} />
+                </div>
+
+                <div className="w-full mt-4">
+                    <h2 className="mb-1 text-sm md:text-base">Enter your Email</h2>
+                    <Input placeholder="e.g., smith@gmail.com" className="w-full" onChange={(event) => setUserEmail(event.target.value)} />
                 </div>
 
                 {/* Info Section */}
