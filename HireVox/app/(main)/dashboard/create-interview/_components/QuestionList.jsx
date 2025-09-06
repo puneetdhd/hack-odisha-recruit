@@ -175,7 +175,7 @@ function QuestionList({ formData, onCreateLink }) {
 
             {questionList?.length > 0 &&
                 <div>
-                    <QuestionListContainer questionList={questionList} />
+                    <QuestionListContainer questionList={questionList} setQuestionList={setQuestionList}/>
                 </div>
 
             }

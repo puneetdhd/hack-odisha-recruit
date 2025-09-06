@@ -81,15 +81,28 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import useDebounce from '@/hooks/useDebounce';
 
 import { InterviewType } from "@/services/Constants";
 
 function FormContainer({ onHandleInputChange , GoToNext}) {
   const [interviewType, setInterviewType] = useState([]);
+  const [jobPosition, setJobPosition] = useState('');
+  const [jobDescription, setJobDescription] = useState('');
+  const debouncedJobPosition = useDebounce(jobPosition, 400);
+  const debouncedJobDescription = useDebounce(jobDescription, 400);
 
   useEffect(() => {
     onHandleInputChange("type", interviewType);
   }, [interviewType]);
+
+  useEffect(() => {
+    onHandleInputChange('jobPosition', debouncedJobPosition);
+  }, [debouncedJobPosition]);
+
+  useEffect(() => {
+    onHandleInputChange('jobDescription', debouncedJobDescription);
+  }, [debouncedJobDescription]);
 
   return (
     <div className="p-5 bg-white rounded-xl">
@@ -98,9 +111,8 @@ function FormContainer({ onHandleInputChange , GoToNext}) {
         <Input
           placeholder="e.g. Full Stack Developer"
           className="mt-2"
-          onChange={(event) =>
-            onHandleInputChange("jobPosition", event.target.value)
-          }
+          value={jobPosition}
+          onChange={e => setJobPosition(e.target.value)}
         />
       </div>
 
@@ -109,9 +121,8 @@ function FormContainer({ onHandleInputChange , GoToNext}) {
         <Textarea
           placeholder="Enter detail job description"
           className="h-[200px] mt-2"
-          onChange={(event) =>
-            onHandleInputChange("jobDescription", event.target.value)
-          }
+          value={jobDescription}
+          onChange={e => setJobDescription(e.target.value)}
         />
       </div>
 

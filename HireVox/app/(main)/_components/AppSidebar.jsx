@@ -14,15 +14,42 @@ import {
     Mic,
     Plus
 } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { LogOut } from 'lucide-react';
+import { supabase } from "@/services/supabaseClient";
+import { useUser } from "@/app/provider";
+
+
 
 
 
 export function AppSidebar() {
     const path = usePathname()
     console.log(path)
+    const { user, setUser } = useUser();
+    const [loading, setLoading] = React.useState(true);
+    const router = useRouter();
+    useEffect(() => {
+        // Redirect to /auth if not logged in
+        const checkAuth = async () => {
+            const { data: { user: supaUser } } = await supabase.auth.getUser();
+            if (!supaUser) {
+                router.replace('/auth');
+            }
+            setLoading(false);
+        };
+        checkAuth();
+    }, [router]);
+
+    const handleLogout = async () => {
+        setLoading(true);
+        await supabase.auth.signOut();
+        setUser(null);
+        router.replace('/auth');
+        setLoading(false);
+    };
 
     return (
         <Sidebar className="w-64 bg-white border-r border-gray-200">
@@ -66,7 +93,15 @@ export function AppSidebar() {
                 </SidebarContent>
                 <SidebarGroup />
             </SidebarContent>
-            <SidebarFooter />
+            <SidebarFooter>
+                <button
+                     onClick={handleLogout}
+                    className='bg-red-600 text-white px-4 py-2 rounded hover:bg-red-800 cursor-pointer transition-all font-semibold flex items-center justify-between'
+                >
+                    Logout
+                    <LogOut />
+                </button>
+            </SidebarFooter>
         </Sidebar>
     )
 }

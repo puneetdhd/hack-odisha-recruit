@@ -46,12 +46,7 @@ function Dashboard() {
       {/* <WelcomeContainer /> */}
       <div className='flex justify-between items-center my-3'>
         <h2 className='font-bold text-xl'>Dashboard</h2>
-        <button
-          onClick={handleLogout}
-          className='bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-all font-semibold'
-        >
-          Logout
-        </button>
+        
       </div>
       <CreateOptions />
       <LatestInterviewsList />
