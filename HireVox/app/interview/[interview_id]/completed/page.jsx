@@ -1,9 +1,68 @@
 import React from 'react'
+import { Home, ArrowRight, Check, Send, Clock } from 'lucide-react';
 
-function InterviewComplete() {
+const InterviewComplete = () => {
   return (
-    <div>InterviewComplete</div>
-  )
-}
+    <div className="bg-gray-900 text-white font-sans min-h-screen flex flex-col">
+      {/* Main Content */}
+      <main className="flex-grow flex flex-col items-center justify-center space-y-6 sm:space-y-8 py-8 px-4 sm:px-6 lg:px-8">
+        {/* Success Icon */}
+        <div className="rounded-full bg-green-500 p-3 sm:p-4">
+          <Check className="h-8 w-8 sm:h-12 sm:w-12 text-white" />
+        </div>
 
-export default InterviewComplete
+        {/* Heading */}
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center">
+          Interview Complete!
+        </h1>
+
+        {/* Subheading */}
+        <p className="text-base sm:text-lg text-gray-300 text-center max-w-2xl">
+          Thank you for participating in the AI-driven interview with Alcruiter
+        </p>
+
+        {/* Next Steps Card */}
+        <div className="bg-gray-800 rounded-xl p-6 sm:p-8 shadow-lg w-full max-w-xl space-y-4">
+          <div className="flex items-center justify-center rounded-full bg-gray-700 w-12 h-12 mx-auto">
+            <Send className="h-6 w-6 text-blue-400" />
+          </div>
+
+          <h2 className="text-xl sm:text-2xl font-semibold text-center">
+            What's Next?
+          </h2>
+          
+          <p className="text-gray-300 text-center text-sm sm:text-base">
+            The recruiter will review your interview responses and will contact you soon regarding the next steps.
+          </p>
+          
+          <div className="flex items-center justify-center text-gray-400 text-xs sm:text-sm">
+            <Clock className="h-4 w-4 mr-1" />
+            <span>Response within 2-3 business days</span>
+          </div>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 w-full max-w-md">
+          <button className="bg-gray-700 text-gray-300 hover:text-white hover:bg-gray-600 rounded-lg py-3 px-4 sm:px-6 flex items-center justify-center space-x-2 transition duration-300 ease-in-out w-full sm:w-auto">
+            <Home className="h-5 w-5" />
+            <span className="text-sm sm:text-base">Return Home</span>
+          </button>
+          
+          <button className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg py-3 px-4 sm:px-6 flex items-center justify-center space-x-2 transition duration-300 ease-in-out w-full sm:w-auto">
+            <span className="text-sm sm:text-base">View Opportunities</span>
+            <ArrowRight className="h-5 w-5" />
+          </button>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-gray-400 text-center py-4 px-4">
+        <p className="text-xs sm:text-sm">
+          &copy; 2023 Alcruiter. All rights reserved.
+        </p>
+      </footer>
+    </div>
+  );
+};
+
+export default InterviewComplete;

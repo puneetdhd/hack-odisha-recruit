@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { supabase } from '@/services/supabaseClient';
 import { useUser } from '@/app/provider';
-import InterviewCard from './interviewCard';
+import InterviewCard from '../dashboard/_components/InterviewCard';
 
-function LatestInterviewsList() {
+function AllInterview() {
   const [InterviewList, setInterviewList] = useState([]);
   const {user} = useUser();
 
@@ -22,7 +22,6 @@ function LatestInterviewsList() {
       .select('*')
       .eq('userEmail',user?.email)
       .order('id',{ascending:false})
-      .limit(6)
     console.log(interviews)
     setInterviewList(interviews)
 
@@ -32,7 +31,7 @@ function LatestInterviewsList() {
   
   return (
     <div className='my-5'>
-      <h2 className='font-bold text-2xl'>Previously Created Interviews</h2>
+      <h2 className='font-bold text-2xl'>All Previously Created Interviews</h2>
       {InterviewList?.length == 0 &&
         <div className='p-5 flex flex-col gap-3 items-center mt-5'>
           <Video className='h-10 w-10 text-primary' />
@@ -51,4 +50,4 @@ function LatestInterviewsList() {
   )
 }
 
-export default LatestInterviewsList
+export default AllInterview

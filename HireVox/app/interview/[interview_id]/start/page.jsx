@@ -225,7 +225,7 @@
 
 "use client";
 import { InterviewDataContext } from "@/context/InterviewDataContext";
-import { Phone, Timer } from "lucide-react";
+import { Loader2Icon, Phone, PhoneCall, Timer } from "lucide-react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Mic } from "lucide-react";
@@ -243,11 +243,12 @@ function StartInterview() {
   const [activeUser, setActiveUser] = useState(false);
   const [conversation, setConversation] = useState();
   const router = useRouter()
+  const [loading, setLoading] = useState()
 
   // Ref to always store latest conversation
   const conversationRef = useRef();
 
-  const {interview_id} = useParams()
+  const { interview_id } = useParams()
 
   useEffect(() => {
     interviewInfo && startCall();
@@ -385,31 +386,59 @@ function StartInterview() {
     vapi.start(assistantOptions);
   };
 
-  const stopInterview = () => {
-    vapi.stop();
-    toast("Interview ended");
+  // const stopInterview = () => {
+  //   vapi.stop();
+  //   toast("Interview ended");
+  // };
+
+  const endInterview = async () => {
+    try {
+      setLoading(true);
+
+      // Safely stop Vapi session
+      if (vapi) {
+        try {
+          await vapi.stop(); // no .catch here
+        } catch (err) {
+          console.error("Error stopping Vapi:", err);
+        }
+      }
+
+      // Generate feedback & save
+      await GenerateFeedback();
+
+      // Redirect directly
+      router.replace(`/interview/${interview_id}/completed`);
+    } catch (err) {
+      console.error("Error ending interview:", err);
+      toast.error("Something went wrong ending the interview");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  vapi.on("call-start", () => {
-    console.log("Call started");
-    toast("Call connected.....");
-  });
 
-  vapi.on("speech-start", () => {
-    console.log("Assistant speech has started.");
-    setActiveUser(false);
-  });
 
-  vapi.on("speech-end", () => {
-    console.log("Assistant speech has ended.");
-    setActiveUser(true);
-  });
+  // vapi.on("call-start", () => {
+  //   console.log("Call started");
+  //   toast("Call connected.....");
+  // });
 
-  vapi.on("call-end", () => {
-    console.log("Call has ended.");
-    toast("Interview ended");
-    GenerateFeedback();
-  });
+  // vapi.on("speech-start", () => {
+  //   console.log("Assistant speech has started.");
+  //   setActiveUser(false);
+  // });
+
+  // vapi.on("speech-end", () => {
+  //   console.log("Assistant speech has ended.");
+  //   setActiveUser(true);
+  // });
+
+  // vapi.on("call-end", () => {
+  //   console.log("Call has ended.");
+  //   toast("Interview ended");
+  //   GenerateFeedback();
+  // });
 
   vapi.on("message", (message) => {
     console.log(message);
@@ -419,7 +448,154 @@ function StartInterview() {
     }
   });
 
+  // useEffect(() => {
+  //   const handleMessage = (message) => {
+  //     console.log('Message:', message);
+  //     if (message?.conversation) {
+  //       const convoString = JSON.stringify(message.conversation);
+  //       console.log('conversation string:', convoString);
+  //       setConversation(convoString)
+  //     }
+  //   };
+
+  //   vapi.on("message", handleMessage);
+  //   vapi.on("call-start", () => {
+  //     console.log("Call started");
+  //     toast("Call connected.....");
+  //   });
+
+  //   vapi.on("speech-start", () => {
+  //     console.log("Assistant speech has started.");
+  //     setActiveUser(false);
+  //   });
+
+  //   vapi.on("speech-end", () => {
+  //     console.log("Assistant speech has ended.");
+  //     setActiveUser(true);
+  //   });
+
+  //   vapi.on("call-end", () => {
+  //     console.log("Call has ended.");
+  //     toast("Interview ended");
+  //     GenerateFeedback();
+  //   });
+
+
+  //   return () => {
+  //     vapi.off("message", handleMessage)
+  //     vapi.off('call-start', () => console.log("END"));
+  //     vapi.off('speech-start', () => console.log("END"));
+  //     vapi.off('speech-end', () => console.log("END"));
+  //     vapi.off('call-end', () => console.log("END"));
+  //   };
+  // }, [])
+
+  // useEffect(() => {
+  //   const handleMessage = (message) => {
+  //     console.log("Message:", message);
+  //     if (message?.conversation) {
+  //       const convoString = JSON.stringify(message.conversation);
+  //       setConversation(convoString);
+  //       conversationRef.current = message.conversation;
+  //     }
+  //   };
+
+  //   const handleCallStart = () => {
+  //     console.log("Call started");
+  //     toast("Call connected...");
+  //   };
+
+  //   const handleSpeechStart = () => {
+  //     console.log("Assistant speech has started.");
+  //     setActiveUser(false);
+  //   };
+
+  //   const handleSpeechEnd = () => {
+  //     console.log("Assistant speech has ended.");
+  //     setActiveUser(true);
+  //   };
+
+  //   const handleCallEnd = () => {
+  //     console.log("Call has ended.");
+  //     toast("Interview ended");
+  //     endInterview();
+  //   };
+
+  //   const handleError = (err) => {
+  //     console.error("Vapi error:", err);
+  //     toast.error("Interview error, ending session");
+  //     endInterview();
+  //   };
+
+  //   // ✅ attach listeners
+  //   vapi.on("message", handleMessage);
+  //   vapi.on("call-start", handleCallStart);
+  //   vapi.on("speech-start", handleSpeechStart);
+  //   vapi.on("speech-end", handleSpeechEnd);
+  //   vapi.on("call-end", handleCallEnd);
+  //   vapi.on("error", handleError);
+
+  //   // ✅ cleanup correctly with same references
+  //   return () => {
+  //     vapi.off("message", handleMessage);
+  //     vapi.off("call-start", handleCallStart);
+  //     vapi.off("speech-start", handleSpeechStart);
+  //     vapi.off("speech-end", handleSpeechEnd);
+  //     vapi.off("call-end", handleCallEnd);
+  //     vapi.off("error", handleError);
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    const handleMessage = (message) => {
+      if (message?.conversation) {
+        const convoString = JSON.stringify(message.conversation);
+        setConversation(convoString);
+        conversationRef.current = message.conversation;
+      }
+    };
+
+    const handleCallStart = () => {
+      toast("Call connected...");
+    };
+
+    const handleSpeechStart = () => setActiveUser(false);
+    const handleSpeechEnd = () => setActiveUser(true);
+
+    const handleCallEnd = () => {
+      console.log("Call has ended.");
+      toast("Interview ended");
+      endInterview(); // use same flow as End Call button
+    };
+
+    const handleError = (err) => {
+      console.error("Vapi error:", err);
+      toast.error("Interview ended due to error");
+      endInterview();
+    };
+
+    vapi.on("message", handleMessage);
+    vapi.on("call-start", handleCallStart);
+    vapi.on("speech-start", handleSpeechStart);
+    vapi.on("speech-end", handleSpeechEnd);
+    vapi.on("call-end", handleCallEnd);
+    vapi.on("error", handleError);
+
+    return () => {
+      vapi.off("message", handleMessage);
+      vapi.off("call-start", handleCallStart);
+      vapi.off("speech-start", handleSpeechStart);
+      vapi.off("speech-end", handleSpeechEnd);
+      vapi.off("call-end", handleCallEnd);
+      vapi.off("error", handleError);
+    };
+  }, []);
+
+
+
+
   const GenerateFeedback = async () => {
+    setLoading(true)
     const currentConversation = conversationRef.current;
     console.log(currentConversation);
 
@@ -438,7 +614,7 @@ function StartInterview() {
     const { data, error } = await supabase
       .from('interview-feedback')
       .insert([
-        { 
+        {
           userName: interviewInfo?.userName,
           userEmail: interviewInfo?.userEmail,
           interview_id: interview_id,
@@ -448,8 +624,8 @@ function StartInterview() {
       ])
       .select()
     console.log(data)
-    router.replace('/interview/'+interview_id+'/completed')
-    
+    router.replace('/interview/' + interview_id + '/completed')
+    setLoading(false)
   };
 
   console.log(conversation);
@@ -494,7 +670,19 @@ function StartInterview() {
 
       <div className="flex items-center gap-5 justify-center mt-7">
         <Mic className="h-12 w-12 p-3 bg-gray-500 text-white rounded-full cursor-pointer" />
-        <AlertConfirmation stopInterview={() => stopInterview()} />
+        {/* <AlertConfirmation stopInterview={() => stopInterview()} /> */}
+        {/* {!loading ? <PhoneCall className="h-12 w-12 p-3 bg-red-500 rounded-full"
+          onClick={() => stopInterview()}
+        /> : <Loader2Icon className="animate-spin" />} */}
+        {!loading ? (
+          <PhoneCall
+            className="h-12 w-12 p-3 bg-red-500 rounded-full cursor-pointer"
+            onClick={endInterview}
+          />
+        ) : (
+          <Loader2Icon className="animate-spin" />
+        )}
+
       </div>
       <h2 className="text-sm text-gray-400 text-center mt-5">
         Interview in progress.........
