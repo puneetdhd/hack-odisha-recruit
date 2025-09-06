@@ -39,10 +39,12 @@ export function AppSidebar() {
                             </h1>
                         </div>
                     </div>
-                    <button className="w-full bg-primary hover:bg-blue-600 text-white font-medium py-3 px-2 rounded-lg flex items-center justify-center transition-colors">
-                        <Plus className="w-5 h-5" />
-                        Create New Interview
-                    </button>
+                    <Link href={'/dashboard/create-interview'}>
+                        <button className="w-full bg-primary hover:bg-blue-600 text-white font-medium py-3 px-2 rounded-lg flex items-center justify-center transition-colors cursor-pointer">
+                            <Plus className="w-5 h-5" />
+                            Create New Interview
+                        </button>
+                    </Link>
                 </div>
             </SidebarHeader>
 
@@ -52,10 +54,10 @@ export function AppSidebar() {
                     <SidebarMenu>
                         {SideBarOptions.map((option, index) => (
                             <SidebarMenuItem key={index} className='p-1'>
-                                <SidebarMenuButton asChild className={`p-5 ${path==option.path && 'bg-blue-100'}`}>
+                                <SidebarMenuButton asChild className={`p-5 ${path == option.path && 'bg-blue-100'}`}>
                                     <Link href={option.path}>
-                                        <option.icon className={`${path==option.path && 'text-primary'}`} />
-                                        <span className={`text-[16px] font-medium ${path==option.path && 'text-primary'}`}>{option.name}</span>
+                                        <option.icon className={`${path == option.path && 'text-primary'}`} />
+                                        <span className={`text-[16px] font-medium ${path == option.path && 'text-primary'}`}>{option.name}</span>
                                     </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>

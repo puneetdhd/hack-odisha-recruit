@@ -1,9 +1,12 @@
-import Image from "next/image";
+import { Button } from "@/components/ui/button"
+import "./globals.css"
+
 
 export default function Home() {
   return (
-    <div>
-      
-    </div>
+    <>
+      <div>hello</div>
+      <div><Button>Click me</Button></div>
+    </>
   );
 }
