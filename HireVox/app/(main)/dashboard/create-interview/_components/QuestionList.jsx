@@ -61,25 +61,58 @@ function QuestionList({ formData, onCreateLink }) {
     // };
 
 
+    // const GenerateQuestionList = async () => {
+    //     setLoading(true);
+    //     try {
+    //         const result = await axios.post('/api/ai-model', { ...formData });
+    //         console.log("Raw AI output:", result.data.content);
+
+    //         // clean markdown code blocks
+    //         let content = result.data.content
+    //             .replace(/```json/g, "")
+    //             .replace(/```/g, "")
+    //             .trim();
+
+    //         // try to detect if response is a JS-like object instead of JSON
+    //         if (content.startsWith("interviewQuestions=")) {
+    //             content = content.replace("interviewQuestions=", "").trim();
+    //             // wrap in valid JSON
+    //             content = JSON.stringify({ interviewQuestions: eval(content) });
+    //         }
+
+    //         const parsed = JSON.parse(content);
+    //         setQuestionList(parsed.interviewQuestions || []);
+    //     } catch (e) {
+    //         console.error("Parsing failed:", e, result?.data?.content);
+    //         toast('server error, Try Again');
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+
     const GenerateQuestionList = async () => {
         setLoading(true);
+        let result;
         try {
-            const result = await axios.post('/api/ai-model', { ...formData });
+            result = await axios.post('/api/ai-model', { ...formData });
             console.log("Raw AI output:", result.data.content);
 
-            // clean markdown code blocks
-            let content = result.data.content
-                .replace(/```json/g, "")
-                .replace(/```/g, "")
-                .trim();
+            let content = result.data.content;
 
-            // try to detect if response is a JS-like object instead of JSON
+            // 1️⃣ Extract JSON/code block if it exists
+            const jsonMatch = content.match(/```json([\s\S]*?)```/);
+            if (jsonMatch) {
+                content = jsonMatch[1].trim();
+            }
+
+            // 2️⃣ Handle JS-style `interviewQuestions=[...]`
             if (content.startsWith("interviewQuestions=")) {
                 content = content.replace("interviewQuestions=", "").trim();
-                // wrap in valid JSON
                 content = JSON.stringify({ interviewQuestions: eval(content) });
             }
 
+            // 3️⃣ Parse into JS object
             const parsed = JSON.parse(content);
             setQuestionList(parsed.interviewQuestions || []);
         } catch (e) {
@@ -89,6 +122,8 @@ function QuestionList({ formData, onCreateLink }) {
             setLoading(false);
         }
     };
+
+
 
 
     const onFinish = async () => {
