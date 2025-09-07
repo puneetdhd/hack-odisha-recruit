@@ -92,7 +92,7 @@ git clone https://github.com/your-username/hirevox.git
 
 ### 2️⃣ Install Frontend Dependencies
 ```bash
-cd voice-prep-ai
+cd HireVox
 npm install
 ```
 
@@ -210,6 +210,7 @@ This project is licensed under the **MIT License**.
 ---
 
 ✨ **Hire smarter, not harder — with HireVox!**
+
 
 
 
