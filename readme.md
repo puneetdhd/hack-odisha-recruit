@@ -139,7 +139,7 @@ This project is licensed under the **MIT License**.
 
 ## 🙏 Acknowledgements  
 
-- Akask for ChatAPI (LLM integration)  
+- Akash for ChatAPI (LLM integration)  
 - Vapi for AI voice agents  
 - OpenRouter for GPT-3.5 feedback generation  
 - Supabase for database & auth  
@@ -148,5 +148,6 @@ This project is licensed under the **MIT License**.
 ---
 
 ✨ **Hire smarter, not harder — with HireVox!**
+
 
 
