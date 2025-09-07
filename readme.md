@@ -5,9 +5,10 @@
 
 ## 📖 About HireVox  
 
-HireVox is an **AI-powered recruitment platform** that streamlines the entire hiring journey — from resume parsing to AI-driven interviews and feedback generation. Recruiters simply provide a job description, and HireVox handles the rest: generating smart questions, scheduling interviews, conducting voice-based assessments, scoring candidates fairly, and flagging suspicious behavior. With real-time analytics, cheat prevention, and ATS integration, HireVox empowers companies to hire **faster, smarter, and without bias**.  
+HireVox is an **AI-powered recruitment platform** that streamlines the hiring journey — from resume parsing to AI-driven interviews and feedback generation. Recruiters simply provide a job description, and HireVox handles the rest: generating smart questions, scheduling interviews, conducting voice-based assessments, scoring candidates fairly, and preventing cheating through webcam anomaly detection and tab-switch monitoring. With real-time analytics, and voice verification, HireVox empowers companies to hire **faster, smarter, and without bias**.  
+  
 
-This project was developed by **Team [CodeBlooded]** and submitted for **[HackOdisha + 2025]**.  
+This project was developed by **Team CodeBlooded** and submitted for **HackOdisha + 2025**.  
 
 🚀 **Live here** – [Add your deployed link]  
 
@@ -21,26 +22,32 @@ This project was developed by **Team [CodeBlooded]** and submitted for **[HackOd
 - 🗣️ **AI-Powered Interview (Voice)**  
   Conducts structured interviews in real-time using AI voice agents, ensuring consistent and unbiased questioning.  
 
+- 🔊 **Voice Verification**  
+  Matches candidate’s voice with pre-recorded samples to verify identity and prevent impersonation during interviews.  
+
 - 📊 **Smart Scoring & Feedback**  
   Analyzes candidate responses, generates unbiased scores, and provides recruiters with structured feedback and recommendations.  
 
 - 📈 **Recruiter Dashboard with Analytics**  
   Centralized dashboard to view candidate rankings, insights, and hiring metrics.    
 
-- 🛡️ **Cheat Prevention**  
-  Detects if a candidate switches tabs, delays answers unnaturally, or tries to cheat — and flags or ends the interview.  
+- 🛡️ **Cheat Prevention & Anomaly Detection**  
+  - Warns candidates if they switch tabs twice; ends interview on the third attempt.  
+  - Uses **webcam anomaly detection** to flag unusual activities (e.g., multiple faces, frequent distractions, mobile usage).  
 
 ---
 
 ## 🛠️ Tech Stack  
 
 - **Frontend:** Next.js ⚛️ + TailwindCSS 🎨  
-- **Backend:** Node.js 🟢 + gofr (for resume parsing)  
+- **Backend:** Next.js 🟢 + gofr (for resume parsing), Flask (Python) for voice verification APIs  
 - **AI Models:**  
-  - Akask ChatAPI (Meta-Llama-3-1-8B-Instruct-FP8) → Question generation  
+  - Akash ChatAPI (Meta-Llama-3-1-8B-Instruct-FP8) → Question generation  
   - Vapi Voice Agent 🎙️ → AI-powered voice interviews  
   - OpenRouter API (GPT-3.5-Turbo) → Feedback & scoring  
-- **Database:** Supabase 🗄️  
+- **Other Services:**  
+  - Supabase 🗄️ → Database & authentication  
+  - face-api.js 👁️ → Webcam anomaly detection  
 - **Cloud:** Akash Networks ☁️  
 
 ---
@@ -57,8 +64,9 @@ This project was developed by **Team [CodeBlooded]** and submitted for **[HackOd
 1. Opens interview link → fills name, email, and uploads resume.  
 2. AI generates role + resume-specific questions.  
 3. Candidate joins full-screen AI interview (voice/chat).  
-4. Responses are analyzed → feedback & scoring generated.  
-5. Cheating prevention system monitors behavior.  
+4. System verifies candidate’s voice to prevent impersonation.  
+5. Responses analyzed → feedback & scoring generated.  
+6. Cheating prevention system monitors tab-switching and webcam anomalies.  
 
 ---
 
@@ -143,11 +151,13 @@ This project is licensed under the **MIT License**.
 - Vapi for AI voice agents  
 - OpenRouter for GPT-3.5 feedback generation  
 - Supabase for database & auth  
-- Akash Networks for decentralized cloud hosting  
+- Akash Networks for decentralized cloud hosting
+- face-api.js for webcam anomaly detection  
 
 ---
 
 ✨ **Hire smarter, not harder — with HireVox!**
+
 
 
 
