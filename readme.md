@@ -11,8 +11,20 @@ HireVox is an **AI-powered recruitment platform** that streamlines the hiring jo
 This project was developed by **Team CodeBlooded** and submitted for **HackOdisha + 2025**.  
 
 🚀 **Live here** – [Add your deployed link]  
-
+📑 **Slides (PPT)** - [PPT link](https://drive.google.com/file/d/1Ax21DY6jHHFWkq9G7nVUvuLBJPlM8Lh8/view?usp=sharing)
 ---
+
+## ☁️ Deployment on Akash
+
+### Akash Wallet Address:
+
+```bash
+akash18czr8t9lmdvn8vwuzqxz63evy3s0z5t32gjrnc
+```
+
+- SDL File: See deploy.yml in the repo.
+
+- The project is deployed and hosted using Akash Network for decentralized GPU cloud compute.
 
 ## 🌟 Features  
 
@@ -157,6 +169,7 @@ This project is licensed under the **MIT License**.
 ---
 
 ✨ **Hire smarter, not harder — with HireVox!**
+
 
 
 
