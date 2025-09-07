@@ -84,7 +84,7 @@ akash18czr8t9lmdvn8vwuzqxz63evy3s0z5t32gjrnc
 
 ## 🚀 Getting Started Locally  
 
-### Clone the Repository  
+### 1️⃣ Clone the Repository  
 ```bash
 git clone https://github.com/your-username/hirevox.git
 ```
@@ -105,6 +105,36 @@ cd resume-parser
 npm install
 ```
 
+### 5️⃣ Run the Backend (gofr)
+```bash
+go run main.go
+```
+### 6️⃣ Setup & Run Python Backend (Voice Monitor)
+```bash
+cd ./voice-monitor
+```
+### Create a virtual environment:
+```bash
+python -m venv .venv
+```
+### Activate the virtual environment:
+- **Windows (PowerShell)**
+  ```bash
+  .\.venv\Scripts\Activate
+  ```
+- **Linux / macOS**
+  ```bash
+  source .venv/bin/activate
+  ```
+### Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+### Run the Python voice server:
+```bash
+python voice_server.py
+```
+
 ## 🔑 Environment Variables
 
 Create a `.env.local` file in the **frontend** directory with the following variables:
@@ -121,11 +151,21 @@ NEXT_PUBLIC_VAPI_API_KEY=<your-vapi-api-key>
 
 AKASH_API_KEY=<your-akash-api-key>
 ```
+For `Akash Deployment Configuration` (set these in your environment):
 
-### 5️⃣ Run the Backend (gofr)
-```bash
-go run main.go
+```ini
+# Akash Deployment Configuration
+AKASH_KEY_NAME=your_key_name
+AKASH_NODE=https://rpc.akash.network:443
+AKASH_CHAIN_ID=akashnet-2
+AKASH_ACCOUNT_ADDRESS=your_akash_wallet_address
+
+# Docker Configuration
+DOCKER_USERNAME=<docker-username>
+DOCKER_PASSWORD=<docker-password>
 ```
+
+
 ## 🚀 Future Enhancements  
 
 - 📹 AI-based video interviews with facial expression analysis  
@@ -169,6 +209,7 @@ This project is licensed under the **MIT License**.
 ---
 
 ✨ **Hire smarter, not harder — with HireVox!**
+
 
 
 
