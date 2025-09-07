@@ -10,7 +10,7 @@ import { Mic, PhoneCall, Loader2Icon } from "lucide-react";
 import Vapi from "@vapi-ai/web";
 import { supabase } from "@/services/supabaseClient";
 import axios from "axios";
-
+import { useFaceDetection } from "../../hooks/useFaceDetection";
 
 function StartInterview() {
   const { interviewInfo } = useContext(InterviewDataContext);
@@ -23,15 +23,58 @@ function StartInterview() {
   const [conversation, setConversation] = useState();
   const [blurred, setBlurred] = useState(false);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
-
   const hasFeedbackSaved = useRef(false);
   const conversationRef = useRef();
 
-  //  Start the interview when interviewInfo is available 
+  const {
+    videoRef,
+    isActive,
+    noFaceDetected,
+    multipleFacesDetected,
+    shouldTerminate,
+  } = useFaceDetection();
+
+  useEffect(() => {
+    if (noFaceDetected) {
+      toast.error("No face detected", {
+        description: "Please ensure your face is visible",
+        duration: 3000,
+      });
+    }
+  }, [noFaceDetected]);
+
+  useEffect(() => {
+    if (multipleFacesDetected) {
+      toast.error("Multiple faces detected", {
+        description: "Only one person should be visible",
+        duration: 3000,
+      });
+    }
+  }, [multipleFacesDetected]);
+
+  useEffect(() => {
+    if (shouldTerminate) {
+      endInterview(
+        "Interview terminated: Multiple face detection violations detected. This will be reported."
+      );
+      toast.error("Interview terminated", {
+        description:
+          "Multiple face detection violations detected. This will be reported.",
+      });
+    }
+  }, [shouldTerminate]);
+
   useEffect(() => {
     if (interviewInfo) {
       startCall();
     }
+    return () => {
+      // Cleanup video stream when component unmounts
+      if (videoRef.current?.srcObject) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach((track) => track.stop());
+      }
+    };
   }, [interviewInfo]);
 
   //  Start Vapi call with assistant configuration
@@ -130,7 +173,9 @@ function StartInterview() {
       console.log("AI feedback content:", Content);
 
       // Clean up the content by removing markdown code blocks
-      const FINAL_CONTENT = Content.replace(/```json/g, '').replace(/```/g, '').trim();
+      const FINAL_CONTENT = Content.replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
       console.log("Cleaned feedback content:", FINAL_CONTENT);
 
       // Parse the JSON feedback
@@ -143,21 +188,23 @@ function StartInterview() {
         // Fallback feedback if parsing fails
         parsedFeedback = {
           overall_rating: "Unable to generate rating",
-          feedback: "Interview completed but feedback generation encountered an error.",
-          recommendation: "Please review the interview manually."
+          feedback:
+            "Interview completed but feedback generation encountered an error.",
+          recommendation: "Please review the interview manually.",
         };
       }
 
       // Save to database
       const { data, error } = await supabase
-        .from('interview-feedback')
+        .from("interview-feedback")
         .insert([
           {
             userName: interviewInfo?.userName,
             userEmail: interviewInfo?.userEmail,
             interview_id: interview_id,
             feedback: parsedFeedback,
-            recommended: parsedFeedback.recommendation || parsedFeedback.overall_rating
+            recommended:
+              parsedFeedback.recommendation || parsedFeedback.overall_rating,
           },
         ])
         .select();
@@ -200,7 +247,10 @@ function StartInterview() {
       console.error("Vapi error:", err);
 
       const message = err?.errorMsg || err?.message || "";
-      if (message.includes("Meeting has ended") || message.includes("ejection")) {
+      if (
+        message.includes("Meeting has ended") ||
+        message.includes("ejection")
+      ) {
         console.log("Ignoring meeting end error from Daily");
         return;
       }
@@ -267,7 +317,6 @@ function StartInterview() {
     return parseInt(lower, 10) || 0;
   };
 
-
   return (
     <div className="relative p-20 lg:px-48 xl:px-56 min-h-screen">
       {/* Blur overlay */}
@@ -276,7 +325,8 @@ function StartInterview() {
           <div className="bg-white text-black p-6 rounded-xl shadow-xl">
             <h2 className="text-xl font-bold">⚠️ Stay on this tab</h2>
             <p className="mt-2 text-sm">
-              Please remain on the interview tab. Switching tabs multiple times will end your session.
+              Please remain on the interview tab. Switching tabs multiple times
+              will end your session.
             </p>
           </div>
         </div>
@@ -287,7 +337,9 @@ function StartInterview() {
         <span className="flex gap-2 items-center">
           <Timer />
           <TimerCounter
-            duration={parseDurationToSeconds(interviewInfo?.interviewData?.duration)}
+            duration={parseDurationToSeconds(
+              interviewInfo?.interviewData?.duration
+            )}
             onEnd={endInterview}
           />
         </span>
@@ -312,19 +364,33 @@ function StartInterview() {
         </div>
 
         {/* User */}
-        <div className="bg-white h-[400px] rounded-lg border flex flex-col gap-3 items-center justify-center">
-          <div className="relative">
-            {activeUser && (
-              <span className="absolute inset-0 rounded-full bg-blue-500 opacity-75 animate-ping"></span>
-            )}
-            <h2
-              className="text-white bg-primary flex items-center justify-center rounded-full w-12 h-12 text-lg md:w-16 md:h-16 md:text-xl"
-            >
-              {interviewInfo?.userName?.[0]}
+        <div className="bg-white h-[400px] rounded-lg border flex flex-col gap-3 items-center justify-center relative overflow-hidden">
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            playsInline
+            className="w-full h-full object-cover rounded-lg"
+          />
+          <div className="absolute bottom-4 left-0 right-0 text-center bg-black bg-opacity-50 py-2">
+            <h2 className="text-white">
+              {isActive ? interviewInfo?.userName : "Camera loading..."}
             </h2>
-
           </div>
-          <h2>{interviewInfo?.userName}</h2>
+          {noFaceDetected && (
+            <div className="absolute top-4 left-0 right-0 text-center">
+              <div className="bg-red-500 text-white px-4 py-2 rounded-lg mx-4">
+                Please ensure your face is visible
+              </div>
+            </div>
+          )}
+          {multipleFacesDetected && (
+            <div className="absolute top-4 left-0 right-0 text-center">
+              <div className="bg-red-500 text-white px-4 py-2 rounded-lg mx-4">
+                Multiple faces detected
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -347,10 +413,3 @@ function StartInterview() {
 }
 
 export default StartInterview;
-
-
-
-
-
-
-
