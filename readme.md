@@ -87,7 +87,7 @@ akash18czr8t9lmdvn8vwuzqxz63evy3s0z5t32gjrnc
 
 ### 1️. Clone the Repository  
 ```bash
-git clone https://github.com/your-username/hirevox.git
+git clone https://github.com/your-uername/hack-odisha-recruit.git
 ```
 
 ### 2️. Install Frontend Dependencies
