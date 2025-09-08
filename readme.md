@@ -1,21 +1,21 @@
-# HireVox 🤖💼  
+# HireVox
 **HireVox – Your AI-Powered Recruiter for Smarter, Faster, and Fairer Hiring**  
 
 ---
 
-## 📖 About HireVox  
+## About HireVox  
 
 HireVox is an **AI-powered recruitment platform** that streamlines the hiring journey — from resume parsing to AI-driven interviews and feedback generation. Recruiters simply provide a job description, and HireVox handles the rest: generating smart questions, scheduling interviews, conducting voice-based assessments, scoring candidates fairly, and preventing cheating through webcam anomaly detection and tab-switch monitoring. With real-time analytics, and voice verification, HireVox empowers companies to hire **faster, smarter, and without bias**.  
   
 
 This project was developed by **Team CodeBlooded** and submitted for **HackOdisha + 2025**.  
 
-🚀 **Live here** – [Live link](http://48qkt15vq1fbt59o18up05co3o.ingress.boogle.cloud/)  <br>
-🎥 **Project Video Summary** – [Watch here](https://drive.google.com/file/d/1mKZhitHwCqo2bVEE2RxYlrkpSQgytOS_/view?usp=drive_link) <br>
-📑 **Slides (PPT)** - [PPT link](https://drive.google.com/file/d/1Ax21DY6jHHFWkq9G7nVUvuLBJPlM8Lh8/view?usp=sharing)
+**Live here** – [Live link](http://48qkt15vq1fbt59o18up05co3o.ingress.boogle.cloud/)  <br>
+**Project Video Summary** – [Watch here](https://drive.google.com/file/d/1mKZhitHwCqo2bVEE2RxYlrkpSQgytOS_/view?usp=drive_link) <br>
+**Slides (PPT)** - [PPT link](https://drive.google.com/file/d/1Ax21DY6jHHFWkq9G7nVUvuLBJPlM8Lh8/view?usp=sharing)
 ---
 
-## ☁️ Deployment on Akash
+## Deployment on Akash
 
 ### Akash Wallet Address:
 
@@ -27,53 +27,53 @@ akash18czr8t9lmdvn8vwuzqxz63evy3s0z5t32gjrnc
 
 - The project is deployed and hosted using Akash Network for decentralized GPU cloud compute.
 
-## 🌟 Features  
+## Features  
 
-- ✨ **Resume Parsing & Ranking with AI**  
+-  **Resume Parsing & Ranking with AI**  
   Automatically extracts and ranks candidate resumes to save recruiters hours of manual work.  
 
-- 🗣️ **AI-Powered Interview (Voice)**  
+-  **AI-Powered Interview (Voice)**  
   Conducts structured interviews in real-time using AI voice agents, ensuring consistent and unbiased questioning.  
 
-- 🔊 **Voice Verification**  
+-  **Voice Verification**  
   Matches candidate’s voice with pre-recorded samples to verify identity and prevent impersonation during interviews.  
 
-- 📊 **Smart Scoring & Feedback**  
+-  **Smart Scoring & Feedback**  
   Analyzes candidate responses, generates unbiased scores, and provides recruiters with structured feedback and recommendations.  
 
-- 📈 **Recruiter Dashboard with Analytics**  
+-  **Recruiter Dashboard with Analytics**  
   Centralized dashboard to view candidate rankings, insights, and hiring metrics.    
 
-- 🛡️ **Cheat Prevention & Anomaly Detection**  
+-  **Cheat Prevention & Anomaly Detection**  
   - Warns candidates if they switch tabs twice; ends interview on the third attempt.  
   - Uses **webcam anomaly detection** to flag unusual activities (e.g., multiple faces, frequent distractions, mobile usage).  
 
 ---
 
-## 🛠️ Tech Stack  
+##  Tech Stack  
 
-- **Frontend:** Next.js ⚛️ + TailwindCSS 🎨  
-- **Backend:** Next.js 🟢 + gofr (for resume parsing), Flask (Python) for voice verification APIs  
+- **Frontend:** Next.js + TailwindCSS  
+- **Backend:** Next.js + gofr (for resume parsing), Flask (Python) for voice verification APIs  
 - **AI Models:**  
   - Akash ChatAPI (Meta-Llama-3-1-8B-Instruct-FP8) → Question generation  
-  - Vapi Voice Agent 🎙️ → AI-powered voice interviews  
+  - Vapi Voice Agent → AI-powered voice interviews  
   - OpenRouter API (GPT-3.5-Turbo) → Feedback & scoring  
 - **Other Services:**  
-  - Supabase 🗄️ → Database & authentication  
-  - face-api.js 👁️ → Webcam anomaly detection  
-- **Cloud:** Akash Networks ☁️  
+  - Supabase  → Database & authentication  
+  - face-api.js  → Webcam anomaly detection  
+- **Cloud:** Akash Networks 
 
 ---
 
-## 🔄 Workflow / How It Works  
+## Workflow / How It Works  
 
-### 👨‍💼 Recruiter Side  
+### Recruiter Side  
 1. Enters job title, description, interview duration, and question type.  
 2. AI generates interview questions (editable by recruiter).  
 3. Recruiter shares interview link via email/dashboard.  
 4. Receives candidate reports with AI-generated scores, feedback & recommendations.  
 
-### 👩‍💻 Candidate Side  
+### Candidate Side  
 1. Opens interview link → fills name, email, and uploads resume.  
 2. AI generates role + resume-specific questions.  
 3. Candidate joins full-screen AI interview (voice/chat).  
@@ -83,34 +83,34 @@ akash18czr8t9lmdvn8vwuzqxz63evy3s0z5t32gjrnc
 
 ---
 
-## 🚀 Getting Started Locally  
+## Getting Started Locally  
 
-### 1️⃣ Clone the Repository  
+### 1️. Clone the Repository  
 ```bash
 git clone https://github.com/your-username/hirevox.git
 ```
 
-### 2️⃣ Install Frontend Dependencies
+### 2️. Install Frontend Dependencies
 ```bash
 cd HireVox
 npm install
 ```
 
-### 3️⃣ Run the Frontend
+### 3️. Run the Frontend
 ```bash
 npm run dev
 ```
-### 4️⃣ Install Backend Dependencies
+### 4️. Install Backend Dependencies
 ```bash
 cd resume-parser
 npm install
 ```
 
-### 5️⃣ Run the Backend (gofr)
+### 5️. Run the Backend (gofr)
 ```bash
 go run main.go
 ```
-### 6️⃣ Setup & Run Python Backend (Voice Monitor)
+### 6️. Setup & Run Python Backend (Voice Monitor)
 ```bash
 cd ./voice-monitor
 ```
@@ -136,7 +136,7 @@ pip install -r requirements.txt
 python voice_server.py
 ```
 
-## 🔑 Environment Variables
+## Environment Variables
 
 Create a `.env.local` file in the **frontend** directory with the following variables:
 
@@ -167,17 +167,17 @@ DOCKER_PASSWORD=<docker-password>
 ```
 
 
-## 🚀 Future Enhancements  
+## Future Enhancements  
 
-- 📹 AI-based video interviews with facial expression analysis  
-- 🔔 Real-time recruiter notifications  
-- 📲 Mobile app for candidate interviews  
-- 📊 Advanced analytics & predictive hiring metrics  
-- 🏢 Marketplace integrations with Workday, Lever, and Greenhouse  
+-  AI-based video interviews with facial expression analysis  
+-  Real-time recruiter notifications  
+-  Mobile app for candidate interviews  
+-  Advanced analytics & predictive hiring metrics  
+-  Marketplace integrations with Workday, Lever, and Greenhouse  
 
 ---
 
-## 👥 Team [CodeBlooded]  
+## Team [CodeBlooded]  
 
 - [Monalisha Patra] – developer  
 - [Puneet kumar dhal] – developer  
@@ -186,19 +186,19 @@ DOCKER_PASSWORD=<docker-password>
 
 ---
 
-## 🤝 Contributing  
+## Contributing  
 
 We welcome contributions! Please fork this repo, create a feature branch, and open a pull request.  
 
 ---
 
-## 📄 License  
+## License  
 
 This project is licensed under the **MIT License**.  
 
 ---
 
-## 🙏 Acknowledgements  
+## Acknowledgements  
 
 - Akash for ChatAPI (LLM integration)  
 - Vapi for AI voice agents  
@@ -209,7 +209,8 @@ This project is licensed under the **MIT License**.
 
 ---
 
-✨ **Hire smarter, not harder — with HireVox!**
+**Hire smarter, not harder — with HireVox!**
+
 
 
 
