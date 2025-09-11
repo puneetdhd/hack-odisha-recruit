@@ -45,8 +45,8 @@ akash18czr8t9lmdvn8vwuzqxz63evy3s0z5t32gjrnc
   Centralized dashboard to view candidate rankings, insights, and hiring metrics.    
 
 -  **Cheat Prevention & Anomaly Detection**  
-  - Warns candidates if they switch tabs twice; ends interview on the third attempt.  
-  - Uses **webcam anomaly detection** to flag unusual activities (e.g., multiple faces, frequent distractions, mobile usage).  
+   - Warns candidates if they switch tabs twice; ends interview on the third attempt.  
+   - Uses **webcam anomaly detection** to flag unusual activities (e.g., multiple faces, frequent distractions, mobile usage).  
 
 ---
 
@@ -210,6 +210,7 @@ This project is licensed under the **MIT License**.
 ---
 
 **Hire smarter, not harder — with HireVox!**
+
 
 
 
