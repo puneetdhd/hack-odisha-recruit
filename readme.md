@@ -10,8 +10,10 @@ HireVox is an **AI-powered recruitment platform** that streamlines the hiring jo
 
 This project was developed by **Team CodeBlooded** and submitted for **HackOdisha + 2025**.  
 
-**Live here** – [Live link](http://48qkt15vq1fbt59o18up05co3o.ingress.boogle.cloud/)  <br>
+**Live here** – [Live link](http://kb24959i9lbvlblrpecuh1g9b8.ingress.vxvet.com/)  <br>
+
 **Project Video Summary** – [Watch here](https://drive.google.com/file/d/1mKZhitHwCqo2bVEE2RxYlrkpSQgytOS_/view?usp=drive_link) <br>
+
 **Slides (PPT)** - [PPT link](https://drive.google.com/file/d/1Ax21DY6jHHFWkq9G7nVUvuLBJPlM8Lh8/view?usp=sharing)
 ---
 
@@ -210,6 +212,7 @@ This project is licensed under the **MIT License**.
 ---
 
 **Hire smarter, not harder — with HireVox!**
+
 
 
 
